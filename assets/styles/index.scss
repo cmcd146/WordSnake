@@ -28,7 +28,7 @@ ul {
         border-left: 2px solid black;
     }
 
-    .cursor {
+    .cursor-word {
         position: absolute;
         border: 3px solid green;
         border-radius: 3px;
@@ -36,7 +36,32 @@ ul {
         left: -2px;
         top: -18px;
     }
+
+    .cursor-space {
+        border: 3px dotted green;
+        position: absolute;
+        border-radius: 3px;
+        padding: 29px;
+        left: -2px;
+        top: -18px;
+    }
+
+    .old {
+        position: absolute;
+        border: 3px solid blue;
+        border-radius: 3px;
+        padding: 29px;
+        left: -2px;
+        top: -18px;
+    }
     
+}
+
+.letter {
+    position: absolute;
+    font-size: 40px;
+    bottom: 5px;
+    right: 18px;
 }
 
 ul:first-of-type {

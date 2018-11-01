@@ -6,6 +6,7 @@ class Board {
         this.dim = dim
         this.grid = Board.blankGrid(dim)
         this.cursor = new Cursor()
+        this.letters = {};
     }
 
     static blankGrid(dim) {
@@ -20,14 +21,19 @@ class Board {
         return grid;
     }
 
-    render () {
+    render() {
         let html = "";
 
         for (let i = 0; i < this.dim; i++) {
             html += "<ul>";
             for (let j = 0; j < this.dim; j++) {
-                if(this.checkCursor([i,j])){
-                    html += "<li><p class='cursor'></p></li>"
+                let coor = [i,j];
+                if(this.checkCurrWord(coor)){
+                    html += `<li><p class='cursor-word'><span class='letter'>${this.letters[coor.toString()]}<span></p></li>`;
+                } else if (this.checkOld(coor)){
+                    html += `<li><p class='old'><span class='letter'>${this.letters[coor.toString()]}<span></p></li>`;
+                } else if (this.checkCurrSpace(coor)) {
+                    html += "<li><p class='cursor-space'></p></li>"
                 } else {
                     html += "<li></li>";
                 }
@@ -39,8 +45,8 @@ class Board {
         figure.innerHTML = html;
     }
 
-    checkCursor(coor) {
-        let currents = this.cursor.current;
+    checkCurrWord(coor) {
+        let currents = this.cursor.currentWord;
         for(let i = 0; i < currents.length; i++) {
             let cursorCoor = currents[i];
             if (coor[0] == cursorCoor[0] && coor[1] == cursorCoor[1]){
@@ -48,6 +54,30 @@ class Board {
             }
         };
         return false;
+    }
+
+    checkOld(coor) {
+        let olds = this.cursor.old;
+        for (let i = 0; i < olds.length; i++) {
+            let cursorCoor = olds[i];
+            if (coor[0] == cursorCoor[0] && coor[1] == cursorCoor[1]) {
+                return true;
+            }
+        };
+        return false;
+    }
+
+    checkCurrSpace(coor) {
+        let currSpace = this.cursor.currSpace;
+        if(coor[0] == currSpace[0] && coor[1] == currSpace[1]){
+            return true;
+        }
+        return false;
+    }
+
+    addLetter(char) {
+        let coor = this.cursor.currentWord[-1]
+        this.cursor.letters[coor] = char
     }
 
     validPosition(coord) {
