@@ -16,19 +16,24 @@ class WordSnake {
     takeTurn() {
 
         document.addEventListener("keydown", e => {
-            e.preventDefault();
-            if (e.keyCode >= 65 && e.keyCode <= 90) {
+            
+            if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
+                e.preventDefault();
                 this.currWord += keybinds[e.keyCode];
                 let letter = keybinds[e.keyCode]
                 this.board.letters[this.cursor.currSpace.toString()] = letter;
                 this.cursor.nextSpace();
                 this.board.render();
-            } else if(e.keyCode == 8){
-                if(this.currWord != '') {
-                    this.currWord = this.currWord.slice(0,-1);
-                    this.cursor.backSpace();
-                    this.board.render();
-                }
+            } else if (e.keyCode == 8 && this.currWord != ''){
+                e.preventDefault();
+                this.currWord = this.currWord.slice(0,-1);
+                this.cursor.backSpace();
+                this.board.render();
+            } else if (e.keyCode == 13 && this.currWord != '') {
+                this.cursor.newTurn();
+                this.board.render();
+            } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == (0||1)) {
+
             }
         });
     }

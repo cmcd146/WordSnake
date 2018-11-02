@@ -46,7 +46,7 @@ class Board {
     }
 
     checkCurrWord(coor) {
-        let currents = this.cursor.currentWord;
+        let currents = this.cursor.currWordCords;
         for(let i = 0; i < currents.length; i++) {
             let cursorCoor = currents[i];
             if (coor[0] == cursorCoor[0] && coor[1] == cursorCoor[1]){
@@ -76,13 +76,13 @@ class Board {
     }
 
     addLetter(char) {
-        let coor = this.cursor.currentWord[-1]
+        let coor = this.cursor.currWordCords[-1]
         this.cursor.letters[coor] = char
     }
 
     validPosition(coord) {
-        return (coord.x >= 0) && (coord.x < this.dim) &&
-            (coord.y >= 0) && (coord.y < this.dim);
+        return (coord[0] >= 0) && (coord[0] < this.dim) &&
+            (coord[1] >= 0) && (coord[1] < this.dim);
     }
 
 }

@@ -1,13 +1,13 @@
 class Cursor {
     constructor(){
-        this.currSpace = [0,0]
-        this.currentWord = [];
+        this.currSpace = [0,0];
+        this.currWordCords = [];
         this.old = [];
         this.direction = "E";
     }
 
     addCurrent(coor) {
-        this.currentWord.push(coor);
+        this.currWordCords.push(coor);
     }
 
     changeDir(dir) {
@@ -15,18 +15,22 @@ class Cursor {
     }
 
     nextSpace() {
-        this.currentWord.push(this.currSpace);
+        this.currWordCords.push(this.currSpace);
         this.currSpace = this.currSpace.map((num, idx) =>  num + directions[this.direction][idx])
     }
 
+    nextSpaceCheck() {
+        return this.currSpace.map((num, idx) => num + directions[this.direction][idx])
+    }
+
     backSpace() {
-        this.currSpace = this.currentWord[this.currentWord.length - 1];
-        this.currentWord = this.currentWord.slice(0,-1);
+        this.currSpace = this.currWordCords[this.currWordCords.length - 1];
+        this.currWordCords = this.currWordCords.slice(0,-1);
     }
 
     newTurn() {
-        this.old = this.currentWord.slice(0, -2)
-        this.currentWord = [this.currentWord[-1]];
+        this.old = this.currWordCords;
+        this.currWordCords = [this.currWordCords.slice(-1)];
     }
 }
 
