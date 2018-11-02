@@ -107,7 +107,6 @@ class Board {
             (coord[1] >= 0) && (coord[1] < this.dim) && 
             this.cursor.checkOlds(coord);
     }
-
 }
 
 const directions = {
