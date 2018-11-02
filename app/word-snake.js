@@ -9,31 +9,33 @@ class WordSnake {
 
     start() {
         this.board.render();
-
         this.takeTurn();
     }
 
+    over() {
+        return this.board.checkOver();
+    }
+
+
     takeTurn() {
 
-        document.addEventListener("keydown", e => {
-            
+        document.addEventListener('keydown', (e) => {
             if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
-                e.preventDefault();
                 this.currWord += keybinds[e.keyCode];
                 let letter = keybinds[e.keyCode]
                 this.board.letters[this.cursor.currSpace.toString()] = letter;
                 this.cursor.nextSpace();
                 this.board.render();
-            } else if (e.keyCode == 8 && this.currWord != ''){
-                e.preventDefault();
-                this.currWord = this.currWord.slice(0,-1);
+            } else if (e.keyCode == 8 && this.currWord != '') {
+                this.currWord = this.currWord.slice(0, -1);
                 this.cursor.backSpace();
                 this.board.render();
-            } else if (e.keyCode == 13 && this.currWord != '') {
-                this.cursor.newTurn();
+            } else if (e.keyCode == 13 && (this.currWord.length != 0 && this.currWord.length != 1)) {
+                this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
+                this.board.newTurn();
                 this.board.render();
-            } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == (0||1)) {
-
+            } else {
+                this.board.render();
             }
         });
     }

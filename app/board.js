@@ -80,11 +80,41 @@ class Board {
         this.cursor.letters[coor] = char
     }
 
-    validPosition(coord) {
-        return (coord[0] >= 0) && (coord[0] < this.dim) &&
-            (coord[1] >= 0) && (coord[1] < this.dim);
+    newTurn() {
+        this.cursor.newTurn();
+        while(!this.validPosition(this.cursor.currSpace)) {
+            this.cursor.changeDir();
+        }
     }
 
+    checkOver() {
+        for (let i = 0; i <= 3; i++) {
+            if(this.cursor.currWordCords.length == 0) {
+                return false;
+            }
+            let check_dir = this.cursor.currWordCords[0].map((coord, idx) => {
+                return coord + Objects.values(directions)[i][idx];
+            });
+            if(this.validPosition(check_dir)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    validPosition(coord) {
+        return (coord[0] >= 0) && (coord[0] < this.dim) &&
+            (coord[1] >= 0) && (coord[1] < this.dim) && 
+            this.cursor.checkOlds(coord);
+    }
+
+}
+
+const directions = {
+    "E": [0, 1],
+    "S": [1, 0],
+    "W": [0, -1],
+    "N": [-1, 0]
 }
 
 

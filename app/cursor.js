@@ -18,6 +18,15 @@ class Cursor {
         this.currWordCords.push(this.currSpace);
         this.currSpace = this.currSpace.map((num, idx) =>  num + directions[this.direction][idx])
     }
+    
+    changeDir() {
+        let old_idx = Object.keys(directions).indexOf(this.direction);
+        let new_directions = Object.keys(directions);
+        new_directions.splice(old_idx, 1);
+        this.direction = _.sample(new_directions);
+        this.currSpace = this.currWordCords[this.currWordCords.length - 1]
+            .map((num, idx) =>  num + directions[this.direction][idx]);
+    }
 
     nextSpaceCheck() {
         return this.currSpace.map((num, idx) => num + directions[this.direction][idx])
@@ -27,11 +36,23 @@ class Cursor {
         this.currSpace = this.currWordCords[this.currWordCords.length - 1];
         this.currWordCords = this.currWordCords.slice(0,-1);
     }
+    
 
     newTurn() {
-        this.old = this.currWordCords;
-        this.currWordCords = [this.currWordCords.slice(-1)];
+        this.old = this.old.concat(this.currWordCords);
+        this.currWordCords = this.currWordCords.slice(-1);
+        this.changeDir();
     }
+
+    checkOlds(coor) {
+        for(let i = 0; i < this.old.length; i++) {
+            if(coor[0] == this.old[i][0] && coor[1] == this.old[i][1]){
+                return false;
+            }
+        };
+        return true;
+    }
+
 }
 
 const directions = {
