@@ -15,20 +15,14 @@ class Cursor {
     changeDir() {
         let old_idx = Object.keys(directions).indexOf(this.direction);
         let new_directions = Object.keys(directions);
-        new_directions.splice((old_idx + 2) % 4, 1)
         old_idx = Object.keys(directions).indexOf(this.direction);
         new_directions.splice(old_idx, 1);
-        console.log(new_directions);
         this.lastDir = this.direction;
-        console.log("===========================")
-        console.log(this.lastDir);
         while(this.lastDir == this.direction){
             this.direction = _.sample(new_directions);
         }
         this.currSpace = this.currWordCords[this.currWordCords.length - 1]
         .map((num, idx) =>  num + directions[this.direction][idx]);
-        console.log(this.direction);
-        console.log("===========================")
     }
 
     nextSpaceCheck() {

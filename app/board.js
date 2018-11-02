@@ -93,7 +93,7 @@ class Board {
                 return false;
             }
             let check_dir = this.cursor.currWordCords[0].map((coord, idx) => {
-                return coord + Objects.values(directions)[i][idx];
+                return coord + Object.values(directions)[i][idx];
             });
             if(this.validPosition(check_dir)){
                 return false;
