@@ -22,7 +22,7 @@ class Cursor {
             this.direction = _.sample(new_directions);
         }
         this.currSpace = this.currWordCords[this.currWordCords.length - 1]
-        .map((num, idx) =>  num + directions[this.direction][idx]);
+            .map((num, idx) =>  num + directions[this.direction][idx]);
     }
 
     nextSpaceCheck() {
@@ -51,7 +51,8 @@ class Cursor {
     }
 
     arrowKeyPress(dir) {
-
+        return this.currWordCords[this.currWordCords.length - 1]
+            .map((num, idx) => num + directions[dir][idx]);
     }
 
 }

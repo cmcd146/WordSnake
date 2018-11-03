@@ -102,6 +102,14 @@ class Board {
         return true;
     }
 
+    arrowKeyPress(dir) {
+        let possibleCurrSpot = this.cursor.arrowKeyPress(dir);
+        if (this.validPosition(possibleCurrSpot) && dir != this.cursor.lastDir) {
+            this.cursor.currSpace = possibleCurrSpot;
+            this.cursor.direction = dir;
+        }
+    }
+
     validPosition(coord) {
         return (coord[0] >= 0) && (coord[0] < this.dim) &&
             (coord[1] >= 0) && (coord[1] < this.dim) && 

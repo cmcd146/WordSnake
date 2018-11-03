@@ -5,6 +5,7 @@ class WordSnake {
         this.board = new Board(10);
         this.cursor = this.board.cursor;
         this.currWord = "";
+        this.strikes = 0;
         document.addEventListener('keydown', this.handleKeydown.bind(this))
     }
 
@@ -18,6 +19,32 @@ class WordSnake {
         }
     }
 
+    checkWord(cb) {
+        var xhr = new XMLHttpRequest();
+
+        // Setup our listener to process completed requests
+        xhr.onload = function () {
+
+            // Process our return data
+            if (xhr.status >= 200 && xhr.status < 300) {
+                // This will run when the request is successful
+                console.log(xhr.response)
+            } else {
+                // This will run when it's not
+                console.log('The request failed!');
+            }
+
+            // This will run either way
+            // All three of these are optional, depending on what you're trying to do
+            console.log('This always runs...');
+        };
+        xhr.responseType = "json";
+        console.log(this.currWord);
+        xhr.open("GET", `https://montanaflynn-spellcheck.p.mashape.com/check/?text=${this.currWord.toLowerCase()}`);
+        xhr.setRequestHeader("X-Mashape-Key", "4ZMGAD2sBWmsh4GlIez63YWuTgbZp1Rg1r0jsnSuF6KXIpznDQ");
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.send();
+    }
 
     handleKeydown(e) {
         if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
@@ -32,11 +59,16 @@ class WordSnake {
             this.cursor.backSpace();
         } else if (e.keyCode == 13 && (this.currWord.length != 0 && this.currWord.length != 1)) {
             // enter key is pressed
-            this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
-            this.board.newTurn();
+            e.preventDefault();
+            // if(this.checkWord()){
+                console.log(this.currWord);
+                this.checkWord(this.responseCb)
+                this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
+                this.board.newTurn();
+            // }
         } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == 1) {
             // directional arrow is pressed
-            this.cursor.arrowKeyPress(keybinds[e.keyCode]);
+            this.board.arrowKeyPress(keybinds[e.keyCode]);
         }
         this.board.render();
         this.checkOver();

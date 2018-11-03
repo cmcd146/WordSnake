@@ -15,6 +15,7 @@ const appHtmlTitle = 'Webpack Boilerplate';
  * Webpack Configuration
  */
 module.exports = {
+    
     entry: {
         vendor: [
             'lodash'

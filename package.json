@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@babel/preset-env": "^7.1.0",
-    "lodash": "4.17.11"
+    "lodash": "4.17.11",
+    "unirest": "^0.5.1"
   },
   "devDependencies": {
     "@babel/core": "7.1.2",
