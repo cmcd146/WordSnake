@@ -13,9 +13,7 @@ class WordSnake {
     }
 
     checkOver() {
-        console.log(this.strikes)
         if (this.strikes == 3) {
-            console.log("returned true")
             return true;
         }
         if (this.board.checkOver()) {
