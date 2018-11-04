@@ -18,7 +18,7 @@ Initially a one week project, I plan to continue adding features as time goes on
 
 ## Technologies
 
-My goal was to only use vanilla Javascript to strengthen those skills.  Anything is possible Javascript!  I faced some challenges but it was a great learning experience.
+My goal was to use only vanilla Javascript.  Anything is possible with Javascript!  I faced some challenges but it was a great learning experience.
 
 I used a opensource spellcheck API from [mashape](https://market.mashape.com/montanaflynn/spellcheck) tp allow me to check if the given word was valid as well.
 
