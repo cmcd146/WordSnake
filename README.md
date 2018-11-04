@@ -13,7 +13,7 @@ Initially a one week project, I plan to continue adding features as time goes on
 * Score is updated as words are completed.
 * When the player reaches three strikes, the game is over.
 
-![wordsnakedemo](https://user-images.githubusercontent.com/41452916/47969677-1f1f5800-e030-11e8-8442-26584fd8b74e.gif)
+![wordsnake](https://user-images.githubusercontent.com/41452916/47969705-876e3980-e030-11e8-9862-b351e6020382.gif)
 
 
 ## Technologies
