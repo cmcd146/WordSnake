@@ -28,6 +28,7 @@ Given the timeframe for this project, I could not implement all the features I w
 
 * A timer for each move
 * Have the board pre-loaded with a few letters that the player can use for bonus points
+* Restriction on usage of same word more than once
 * Add animations and additional styling
 * Allow for different languages
 * Mobile version
