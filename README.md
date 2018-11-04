@@ -1,6 +1,8 @@
 
 ### WordSnake
 
+[Live App](https://cmcd146.github.io/dist/index)
+
 WordSnake is a word game using vanilla javascript.  I tried to blend two classics, Snake and Crossword into a fun and challenging game that test a persons vocabulary and spelling skills.  
 
 Initially a one week project, I plan to continue adding features as time goes on.
