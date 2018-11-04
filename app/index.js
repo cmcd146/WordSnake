@@ -21,9 +21,6 @@ const WordSnake = require("./word-snake");
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const figure = document.getElementById("word-snake-game");
-    var score = document.getElementById("score");
-
     const game = new WordSnake();
     game.start();
 });

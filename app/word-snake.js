@@ -6,7 +6,9 @@ class WordSnake {
         this.cursor = this.board.cursor;
         this.currWord = "";
         this.strikes = 0;
+        this.score = 0;
         document.addEventListener('keydown', this.handleKeydown.bind(this))
+        this.responseCb = this.responseCb.bind(this);
     }
 
     start() {
@@ -21,57 +23,116 @@ class WordSnake {
 
     checkWord(cb) {
         var xhr = new XMLHttpRequest();
+        xhr.onload = () => {
 
-        // Setup our listener to process completed requests
-        xhr.onload = function () {
-
-            // Process our return data
             if (xhr.status >= 200 && xhr.status < 300) {
-                // This will run when the request is successful
-                console.log(xhr.response)
-            } else {
-                // This will run when it's not
-                console.log('The request failed!');
-            }
-
-            // This will run either way
-            // All three of these are optional, depending on what you're trying to do
-            console.log('This always runs...');
+                cb(xhr.response.original == xhr.response.suggestion)
+            } 
         };
+
         xhr.responseType = "json";
-        console.log(this.currWord);
         xhr.open("GET", `https://montanaflynn-spellcheck.p.mashape.com/check/?text=${this.currWord.toLowerCase()}`);
         xhr.setRequestHeader("X-Mashape-Key", "4ZMGAD2sBWmsh4GlIez63YWuTgbZp1Rg1r0jsnSuF6KXIpznDQ");
         xhr.setRequestHeader("Accept", "application/json");
         xhr.send();
     }
 
+    responseCb(bool) {
+        if (bool) {
+
+            this.score += this.currWord.length;
+            this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
+            this.updateScore();
+            this.board.newTurn();
+            this.board.render();
+
+        } else {
+
+            this.strikes += 1;
+
+            const html = document.getElementsByClassName("content")[0];
+
+            let warning = document.createElement("P");
+            warning.className = "warning";
+            
+            var newContent = document.createTextNode("Not a word. +1 Strike");
+            warning.appendChild(newContent); 
+
+            document.body.insertBefore(warning, html); 
+            this.board.render();
+            
+            let letters =  document.getElementsByClassName("cursor-word");
+
+            Array.from(letters).forEach(letter => {
+                letter.className = "cursor-word wrong";
+            });
+            
+            
+        }
+    }
+
+    updateScore(){
+        document.getElementsByClassName("number")[0].innerHTML = this.score;
+    }
+
     handleKeydown(e) {
+
         if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
+
             // letter key is pressed
             this.currWord += keybinds[e.keyCode];
             let letter = keybinds[e.keyCode]
             this.board.letters[this.cursor.currSpace.toString()] = letter;
             this.cursor.nextSpace();
+
         } else if (e.keyCode == 8 && (this.currWord != '' && this.currWord.length != 1)) {
+
             // delete key is pressed
             this.currWord = this.currWord.slice(0, -1);
             this.cursor.backSpace();
-        } else if (e.keyCode == 13 && (this.currWord.length != 0 && this.currWord.length != 1)) {
+
+        } else if (e.keyCode == 13) {
             // enter key is pressed
-            e.preventDefault();
-            // if(this.checkWord()){
-                console.log(this.currWord);
-                this.checkWord(this.responseCb)
-                this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
-                this.board.newTurn();
-            // }
+            
+            //remove past warning if posted
+            let warning = document.getElementsByClassName("warning")[0];
+            if (warning) {
+                warning.remove();
+            }
+
+            if (this.currWord.length > 1) {
+                // with correct length word
+
+                this.checkWord(this.responseCb);
+            } else {
+                // with incorrect length
+                const html = document.getElementsByClassName("content")[0];
+
+                let warning = document.createElement("P");
+                warning.className = "warning wrong-length";
+
+                var newContent = document.createTextNode("Word must be at least 2 letters long.");
+                warning.appendChild(newContent);
+
+                document.body.insertBefore(warning, html); 
+            }
         } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == 1) {
+
             // directional arrow is pressed
             this.board.arrowKeyPress(keybinds[e.keyCode]);
+
         }
+
         this.board.render();
         this.checkOver();
+    }
+
+    removeWarning() {
+        //remove past warning if posted
+        let warning = document.getElementsByClassName("warning")[0];
+        if (warning) {
+            warning.remove();
+        }
     }
 }
 

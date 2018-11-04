@@ -8,10 +8,44 @@ html {
     box-sizing: inherit;
 }
 
+.warning {
+    position: absolute;
+    left: 566px;
+    top: 74px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.wrong-length {
+    left: 466px;
+}
+
+h1 {
+    font-family: 'Exo', sans-serif;
+    font-weight: lighter;
+    font-style: italic;
+    position: absolute;
+    left: 309px;
+}
+
+.score-line {
+    font-family: 'Open Sans', sans-serif;
+    position: absolute;
+    bottom: 794px;
+    left: 91px;
+    display: flex;
+    align-items: center;
+
+    p {
+        margin: 10px;
+    }
+}
+
 ul {
     display: flex;
     list-style: none;
     margin: 0; 
+    position: relative;
+    top: 100px;
 
     li {
         border: 1px solid black;
@@ -35,6 +69,10 @@ ul {
         padding: 29px;
         left: -2px;
         top: -18px;
+    }
+
+    .wrong {
+        border: 3px solid red;
     }
 
     .cursor-space {
