@@ -7,18 +7,21 @@ class WordSnake {
         this.currWord = "";
         this.strikes = 0;
         this.score = 0;
-        document.addEventListener('keydown', this.handleKeydown.bind(this))
+        this.handleKeydown = this.handleKeydown.bind(this);
+        document.addEventListener('keydown', this.handleKeydown)
         this.responseCb = this.responseCb.bind(this);
     }
 
-    start() {
-        this.board.render();
-    }
-
     checkOver() {
-        if (this.board.checkOver()) {
-            alert("GAME OVER");
+        console.log(this.strikes)
+        if (this.strikes == 3) {
+            console.log("returned true")
+            return true;
         }
+        if (this.board.checkOver()) {
+            return true;
+        }
+        return false;
     }
 
     checkWord(cb) {
@@ -50,25 +53,31 @@ class WordSnake {
 
             this.strikes += 1;
 
-            const html = document.getElementsByClassName("content")[0];
-
-            let warning = document.createElement("P");
-            warning.className = "warning";
+            if(this.strikes < 3) {
             
-            var newContent = document.createTextNode("Not a word. +1 Strike");
-            warning.appendChild(newContent); 
+                const html = document.getElementsByClassName("content")[0];
 
-            document.body.insertBefore(warning, html); 
-            this.board.render();
+                let warning = document.createElement("P");
+                warning.className = "warning";
+                
+                var newContent = document.createTextNode("Not a word. +1 Strike");
+                warning.appendChild(newContent); 
+
+                document.body.insertBefore(warning, html); 
+                this.board.render();
+                
+            };
             
-            let letters =  document.getElementsByClassName("cursor-word");
-
+            let letters =  document.getElementsByClassName("cursor-word")
+            
             Array.from(letters).forEach(letter => {
                 letter.className = "cursor-word wrong";
             });
             
-            
         }
+        if (this.checkOver()) {
+            this.endGame();
+        };
     }
 
     updateScore(){
@@ -106,14 +115,15 @@ class WordSnake {
                 this.checkWord(this.responseCb);
             } else {
                 // with incorrect length
-                const html = document.getElementsByClassName("content")[0];
 
+                const html = document.getElementsByClassName("content")[0];
+                
                 let warning = document.createElement("P");
                 warning.className = "warning wrong-length";
-
+                
                 var newContent = document.createTextNode("Word must be at least 2 letters long.");
                 warning.appendChild(newContent);
-
+                
                 document.body.insertBefore(warning, html); 
             }
         } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == 1) {
@@ -124,7 +134,6 @@ class WordSnake {
         }
 
         this.board.render();
-        this.checkOver();
     }
 
     removeWarning() {
@@ -134,6 +143,20 @@ class WordSnake {
             warning.remove();
         }
     }
+
+    endGame() {
+        document.removeEventListener("keydown", this.handleKeydown);
+        
+        const html = document.getElementsByClassName("content")[0];
+
+        let warning = document.createElement("P");
+        warning.className = "warning game-over";
+
+        var newContent = document.createTextNode("Third Strike. Game Over.");
+        warning.appendChild(newContent);
+
+        document.body.insertBefore(warning, html);
+    };
 }
 
 
