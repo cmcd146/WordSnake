@@ -1,3 +1,5 @@
+const _ = require("underscore");
+
 class Cursor {
     constructor(){
         this.currSpace = [0,0];
