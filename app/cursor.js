@@ -23,7 +23,7 @@ class Cursor {
         new_directions.splice(old_dir_idx, 1);
         this.lastDir = this.direction;
 
-        this.temp_dir = _.sample(new_directions);
+        this.temp_dir = new_directions[Math.floor(Math.random() * new_directions.length)];
         this.currSpace = this.currWordCords[this.currWordCords.length - 1]
             .map((num, idx) =>  num + directions[this.temp_dir][idx]);
     }
