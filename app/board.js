@@ -85,6 +85,7 @@ class Board {
         while(!this.validPosition(this.cursor.currSpace)) {
             this.cursor.changeDir();
         }
+        this.cursor.direction = this.cursor.temp_dir;
     }
 
     checkOver() {

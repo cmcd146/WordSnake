@@ -1,4 +1,3 @@
-const _ = require("underscore");
 
 class Cursor {
     constructor(){
@@ -14,17 +13,19 @@ class Cursor {
         this.currSpace = this.currSpace.map((num, idx) =>  num + directions[this.direction][idx])
     }
     
-    changeDir() {
-        let old_idx = Object.keys(directions).indexOf(this.direction);
+    changeDir() { 
+        // find and delete options to move in the same direction or back the way you came
+        let old_dir_idx = Object.keys(directions).indexOf(this.direction);
         let new_directions = Object.keys(directions);
-        old_idx = Object.keys(directions).indexOf(this.direction);
-        new_directions.splice(old_idx, 1);
+        old_dir_idx = Object.keys(directions).indexOf(this.direction);
+        new_directions.splice((old_dir_idx + 2) % 4, 1);
+        old_dir_idx = new_directions.indexOf(this.direction);
+        new_directions.splice(old_dir_idx, 1);
         this.lastDir = this.direction;
-        while(this.lastDir == this.direction){
-            this.direction = _.sample(new_directions);
-        }
+
+        this.temp_dir = _.sample(new_directions);
         this.currSpace = this.currWordCords[this.currWordCords.length - 1]
-            .map((num, idx) =>  num + directions[this.direction][idx]);
+            .map((num, idx) =>  num + directions[this.temp_dir][idx]);
     }
 
     nextSpaceCheck() {
