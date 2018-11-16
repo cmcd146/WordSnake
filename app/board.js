@@ -99,7 +99,7 @@ class Board {
         this.cursor.direction = this.cursor.temp_dir;
     }
 
-
+    // check if the player is trapped
     checkOver() {
         for (let i = 0; i <= 3; i++) {
             let check_dir = this.cursor.currWordCords[0].map((coord, idx) => {
@@ -112,6 +112,7 @@ class Board {
         return true;
     }
 
+    // Change direction when user presses arrow key
     arrowKeyPress(dir) {
         let possibleCurrSpot = this.cursor.arrowKeyPress(dir);
         if (this.validPosition(possibleCurrSpot) && dir != this.cursor.lastDir) {
@@ -120,6 +121,7 @@ class Board {
         }
     }
 
+    // check if coordinate is a valid position
     validPosition(coord) {
         return (coord[0] >= 0) && (coord[0] < this.dim) &&
             (coord[1] >= 0) && (coord[1] < this.dim) && 
