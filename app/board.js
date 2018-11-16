@@ -22,13 +22,17 @@ class Board {
         return grid;
     }
 
+    // Render html representation of board and add it to the page
     render() {
         let html = "";
 
         for (let i = 0; i < this.dim; i++) {
             html += "<ul>";
+
             for (let j = 0; j < this.dim; j++) {
                 let coor = [i,j];
+
+                // depending on status of coordinate, add li with different classes
                 if(this.checkCurrWord(coor)){
                     html += `<li><p class='cursor-word'><span class='letter'>${this.letters[coor.toString()]}<span></p></li>`;
                 } else if (this.checkOld(coor)){
@@ -36,6 +40,7 @@ class Board {
                 } else if (this.checkCurrSpace(coor)) {
                     html += "<li><p class='cursor-space'></p></li>"
                 } else {
+                    // empty li if space is free
                     html += "<li></li>";
                 }
             }
@@ -46,6 +51,7 @@ class Board {
         figure.innerHTML = html;
     }
 
+    // check if particular coordinate is in the current word being built
     checkCurrWord(coor) {
         let currents = this.cursor.currWordCords;
         for(let i = 0; i < currents.length; i++) {
@@ -57,6 +63,7 @@ class Board {
         return false;
     }
 
+    // check if particular coordinate has been used for a completed word
     checkOld(coor) {
         let olds = this.cursor.old;
         for (let i = 0; i < olds.length; i++) {
@@ -68,6 +75,7 @@ class Board {
         return false;
     }
 
+    // check if coordinate is the current space, waiting for a letter keypress
     checkCurrSpace(coor) {
         let currSpace = this.cursor.currSpace;
         if(coor[0] == currSpace[0] && coor[1] == currSpace[1]){
@@ -76,11 +84,13 @@ class Board {
         return false;
     }
 
+    // add letter to POJO that tracks what letter is in which spot
     addLetter(char) {
         let coor = this.cursor.currWordCords[-1]
-        this.cursor.letters[coor] = char
+        this.letters[coor] = char
     }
 
+    // move cursor until it is in a valid spot when user finishes a turn
     newTurn() {
         this.cursor.newTurn();
         while(!this.validPosition(this.cursor.currSpace)) {
@@ -89,11 +99,9 @@ class Board {
         this.cursor.direction = this.cursor.temp_dir;
     }
 
+
     checkOver() {
         for (let i = 0; i <= 3; i++) {
-            if(this.cursor.currWordCords.length == 0) {
-                return false;
-            }
             let check_dir = this.cursor.currWordCords[0].map((coord, idx) => {
                 return coord + Object.values(directions)[i][idx];
             });
@@ -115,7 +123,8 @@ class Board {
     validPosition(coord) {
         return (coord[0] >= 0) && (coord[0] < this.dim) &&
             (coord[1] >= 0) && (coord[1] < this.dim) && 
-            this.cursor.checkOlds(coord);
+            this.cursor.checkOlds(coord) &&
+            this.cursor.checkCurr(coord);
     }
 }
 

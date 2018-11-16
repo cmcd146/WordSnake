@@ -43,15 +43,22 @@ class WordSnake {
 
     // manipulate game based on whether the user's word is valid.
     responseCb(bool) {
+        
         // if word is valid, update score, reset cursor, change direction, and rerender board
         if (bool) {
 
             this.score += this.currWord.length;
             this.currWord = this.board.letters[this.cursor.currWordCords.slice(-1).toString()];
             this.updateScore();
-            this.board.newTurn();
-            this.board.render();
 
+            // check if the game is over and end the game if it is.
+            if (this.checkOver()) {
+                this.endGame();
+            } else {
+                this.board.newTurn();
+            };
+
+            this.board.render();
 
         // if word invalid, add strike and message to user
         } else {
@@ -79,12 +86,7 @@ class WordSnake {
                 letter.className = "cursor-word wrong";
             });
             
-        }
-
-        // check if the game is over and end the game if it is.
-        if (this.checkOver()) {
-            this.endGame();
-        };
+        }  
     }
 
     // change score html element to new score
@@ -162,9 +164,16 @@ class WordSnake {
         const html = document.getElementsByClassName("content")[0];
 
         let warning = document.createElement("P");
-        warning.className = "warning game-over";
-
-        var newContent = document.createTextNode("Third Strike. Game Over.");
+        
+        let newContent;
+        if(this.strikes == 3) {
+            debugger;
+            warning.className = "warning game-over";
+            newContent = document.createTextNode("Third Strike. Game Over.");
+        } else {
+            warning.className = "warning trap";
+            newContent = document.createTextNode("You're trapped. Game Over.");
+        }
         warning.appendChild(newContent);
 
         document.body.insertBefore(warning, html);
