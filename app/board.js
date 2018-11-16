@@ -1,6 +1,6 @@
 const Cursor = require("./cursor")
 
-
+// Board class that creates and renders board, contains some game logic
 class Board {
     constructor (dim) {
         this.dim = dim
@@ -9,6 +9,7 @@ class Board {
         this.letters = {};
     }
 
+    // create blank grid for board
     static blankGrid(dim) {
         const grid = [];
         for (let i = 0; i < dim; i++) {

@@ -1,5 +1,6 @@
 const Board = require("./board");
 
+// Actual game class
 class WordSnake {
     constructor() {
         this.board = new Board(10);
@@ -12,6 +13,7 @@ class WordSnake {
         this.responseCb = this.responseCb.bind(this);
     }
 
+    //return true if game is over
     checkOver() {
         if (this.strikes == 3) {
             return true;
@@ -22,6 +24,7 @@ class WordSnake {
         return false;
     }
 
+    //check users word against dictionary API and send boolean to callback
     checkWord(cb) {
         var xhr = new XMLHttpRequest();
         xhr.onload = () => {
@@ -38,7 +41,9 @@ class WordSnake {
         xhr.send();
     }
 
+    // manipulate game based on whether the user's word is valid.
     responseCb(bool) {
+        // if word is valid, update score, reset cursor, change direction, and rerender board
         if (bool) {
 
             this.score += this.currWord.length;
@@ -47,6 +52,8 @@ class WordSnake {
             this.board.newTurn();
             this.board.render();
 
+
+        // if word invalid, add strike and message to user
         } else {
 
             this.strikes += 1;
@@ -73,15 +80,19 @@ class WordSnake {
             });
             
         }
+
+        // check if the game is over and end the game if it is.
         if (this.checkOver()) {
             this.endGame();
         };
     }
 
+    // change score html element to new score
     updateScore(){
         document.getElementsByClassName("number")[0].innerHTML = this.score;
     }
 
+    // event handler callback that reacts to keypresses from user
     handleKeydown(e) {
 
         if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
@@ -134,14 +145,17 @@ class WordSnake {
         this.board.render();
     }
 
+
+    //remove past warning if posted
     removeWarning() {
-        //remove past warning if posted
         let warning = document.getElementsByClassName("warning")[0];
         if (warning) {
             warning.remove();
         }
     }
 
+
+    // if game is over, remove event listener and display message to user.
     endGame() {
         document.removeEventListener("keydown", this.handleKeydown);
         
@@ -190,7 +204,6 @@ let keybinds = {
     38: "N",
     39: "E",
     40: "S"
-
 }
 
 module.exports = WordSnake;
