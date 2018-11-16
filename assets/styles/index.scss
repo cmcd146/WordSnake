@@ -125,7 +125,43 @@ ul:last-of-type {
     display: none;
 }
 
-.shown-directions {
-    display: block;
-}
+.directions-button {
+    position: absolute;
+    left: 636px;
+    top: 750px;
 
+    padding: 10px;
+    border-radius: 3px;
+    outline: none;
+
+    &:hover {
+        border: 1px solid rgb(201, 19, 19)
+    }
+}
+.show-directions {
+    position: absolute;
+    display: block;
+
+    width: 200px;
+    left: 747px;
+    top: 92px;
+
+    h2 {
+        font-family: 'Exo', sans-serif;
+        font-weight: lighter;
+        font-style: italic;
+    }
+
+    ul {
+        display: flex;
+        position: relative;
+        top: 0px;
+        padding: 0;
+        flex-direction: column;
+
+        li {
+            border: none;
+            padding: 5px 0;
+        }
+    }
+}

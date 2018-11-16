@@ -19,12 +19,13 @@ class WordSnake {
         document.addEventListener("keydown", this.handleKeydown);
     }
 
-    // adds, button handlers at begining of game
+    // adds button handlers at begining of game
     addButtonHandlers() {
         let dir_but = document.getElementsByClassName("directions-button")[0];
         dir_but.addEventListener("click", this.toggleDirections);
     }
 
+    // toggle visibility of directions
     toggleDirections(e) {
         let directions = document.getElementsByClassName("hidden-directions")[0];
         if(directions){
