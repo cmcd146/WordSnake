@@ -2,26 +2,71 @@ const Board = require("./board");
 
 // Actual game class
 class WordSnake {
+
     constructor() {
+
         this.board = new Board(10);
         this.cursor = this.board.cursor;
         this.currWord = "";
         this.strikes = 0;
         this.score = 0;
+
         this.handleKeydown = this.handleKeydown.bind(this);
         document.addEventListener('keydown', this.handleKeydown)
         this.responseCb = this.responseCb.bind(this);
     }
 
-    //return true if game is over
-    checkOver() {
-        if (this.strikes == 3) {
-            return true;
+    // event handler callback that reacts to keypresses from user
+    handleKeydown(e) {
+
+        if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
+
+            // letter key is pressed
+            this.currWord += keybinds[e.keyCode];
+            let letter = keybinds[e.keyCode]
+            this.board.letters[this.cursor.currSpace.toString()] = letter;
+            this.cursor.nextSpace();
+
+        } else if (e.keyCode == 8 && (this.currWord != '' && this.currWord.length != 1)) {
+
+            // delete key is pressed
+            this.currWord = this.currWord.slice(0, -1);
+            this.cursor.backSpace();
+
+        } else if (e.keyCode == 13) {
+            // enter key is pressed
+
+            //remove past warning if posted
+            let warning = document.getElementsByClassName("warning")[0];
+            if (warning) {
+                warning.remove();
+            }
+
+            if (this.currWord.length > 1) {
+                // with correct length word
+
+                this.checkWord(this.responseCb);
+            } else {
+                // with incorrect length
+
+                const html = document.getElementsByClassName("content")[0];
+
+                let warning = document.createElement("P");
+                warning.className = "warning wrong-length";
+
+                var newContent = document.createTextNode("Word must be at least 2 letters long.");
+                warning.appendChild(newContent);
+
+                document.body.insertBefore(warning, html);
+            }
+        } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == 1) {
+
+            // directional arrow is pressed
+            this.board.arrowKeyPress(keybinds[e.keyCode]);
+
         }
-        if (this.board.checkOver()) {
-            return true;
-        }
-        return false;
+
+        this.board.render();
     }
 
     //check users word against dictionary API and send boolean to callback
@@ -96,60 +141,6 @@ class WordSnake {
         document.getElementsByClassName("number")[0].innerHTML = this.score;
     }
 
-    // event handler callback that reacts to keypresses from user
-    handleKeydown(e) {
-
-        if (e.keyCode >= 65 && e.keyCode <= 90 && this.board.validPosition(this.cursor.currSpace)) {
-
-            // letter key is pressed
-            this.currWord += keybinds[e.keyCode];
-            let letter = keybinds[e.keyCode]
-            this.board.letters[this.cursor.currSpace.toString()] = letter;
-            this.cursor.nextSpace();
-
-        } else if (e.keyCode == 8 && (this.currWord != '' && this.currWord.length != 1)) {
-
-            // delete key is pressed
-            this.currWord = this.currWord.slice(0, -1);
-            this.cursor.backSpace();
-
-        } else if (e.keyCode == 13) {
-            // enter key is pressed
-            
-            //remove past warning if posted
-            let warning = document.getElementsByClassName("warning")[0];
-            if (warning) {
-                warning.remove();
-            }
-
-            if (this.currWord.length > 1) {
-                // with correct length word
-
-                this.checkWord(this.responseCb);
-            } else {
-                // with incorrect length
-
-                const html = document.getElementsByClassName("content")[0];
-                
-                let warning = document.createElement("P");
-                warning.className = "warning wrong-length";
-                
-                var newContent = document.createTextNode("Word must be at least 2 letters long.");
-                warning.appendChild(newContent);
-                
-                document.body.insertBefore(warning, html); 
-            }
-        } else if (e.keyCode >= 37 && e.keyCode <= 40 && this.currWord.length == 1) {
-
-            // directional arrow is pressed
-            this.board.arrowKeyPress(keybinds[e.keyCode]);
-
-        }
-
-        this.board.render();
-    }
-
-
     //remove past warning if posted
     removeWarning() {
         let warning = document.getElementsByClassName("warning")[0];
@@ -158,6 +149,16 @@ class WordSnake {
         }
     }
 
+    //return true if game is over
+    checkOver() {
+        if (this.strikes == 3) {
+            return true;
+        }
+        if (this.board.checkOver()) {
+            return true;
+        }
+        return false;
+    }
 
     // if game is over, remove event listener and display message to user.
     endGame() {
