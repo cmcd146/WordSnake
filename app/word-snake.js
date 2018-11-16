@@ -11,9 +11,28 @@ class WordSnake {
         this.strikes = 0;
         this.score = 0;
 
+        this.toggleDirections = this.toggleDirections.bind(this);
         this.handleKeydown = this.handleKeydown.bind(this);
-        document.addEventListener('keydown', this.handleKeydown)
         this.responseCb = this.responseCb.bind(this);
+
+        this.addButtonHandlers();
+        document.addEventListener("keydown", this.handleKeydown);
+    }
+
+    // adds, button handlers at begining of game
+    addButtonHandlers() {
+        let dir_but = document.getElementsByClassName("directions-button")[0];
+        dir_but.addEventListener("click", this.toggleDirections);
+    }
+
+    toggleDirections(e) {
+        let directions = document.getElementsByClassName("hidden-directions")[0];
+        if(directions){
+            directions.className = "show-directions";
+        } else {
+            directions = document.getElementsByClassName("show-directions")[0];
+            directions.className = "hidden-directions";
+        }
     }
 
     // event handler callback that reacts to keypresses from user
@@ -23,7 +42,7 @@ class WordSnake {
 
             // letter key is pressed
             this.currWord += keybinds[e.keyCode];
-            let letter = keybinds[e.keyCode]
+            let letter = keybinds[e.keyCode];
             this.board.letters[this.cursor.currSpace.toString()] = letter;
             this.cursor.nextSpace();
 
@@ -75,7 +94,7 @@ class WordSnake {
         xhr.onload = () => {
 
             if (xhr.status >= 200 && xhr.status < 300) {
-                cb(xhr.response.original == xhr.response.suggestion)
+                cb(xhr.response.original == xhr.response.suggestion);
             } 
         };
 
@@ -127,7 +146,7 @@ class WordSnake {
                 this.endGame();
             };
             
-            let letters =  document.getElementsByClassName("cursor-word")
+            let letters =  document.getElementsByClassName("cursor-word");
             
             Array.from(letters).forEach(letter => {
                 letter.className = "cursor-word wrong";
@@ -215,6 +234,6 @@ let keybinds = {
     38: "N",
     39: "E",
     40: "S"
-}
+};
 
 module.exports = WordSnake;
