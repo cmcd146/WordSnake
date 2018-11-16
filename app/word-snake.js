@@ -43,7 +43,7 @@ class WordSnake {
 
     // manipulate game based on whether the user's word is valid.
     responseCb(bool) {
-        
+
         // if word is valid, update score, reset cursor, change direction, and rerender board
         if (bool) {
 
@@ -78,6 +78,8 @@ class WordSnake {
                 document.body.insertBefore(warning, html); 
                 this.board.render();
                 
+            } else {
+                this.endGame();
             };
             
             let letters =  document.getElementsByClassName("cursor-word")
@@ -167,7 +169,6 @@ class WordSnake {
         
         let newContent;
         if(this.strikes == 3) {
-            debugger;
             warning.className = "warning game-over";
             newContent = document.createTextNode("Third Strike. Game Over.");
         } else {
