@@ -88,8 +88,8 @@ module.exports = {
 
             // IMAGES
             {
-                test: /\.(jpe?g|png|gif)$/,
-                loader: 'file-loader',
+                test: /\.(jpe?g|png|gif|ico)$/,
+                loader: 'file-loader?name=[name].[ext]',
                 options: {
                     name: '[path][name].[ext]'
                 }
